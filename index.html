@@ -2,25 +2,31 @@
 <html>
 
 <head>
-  <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <meta name="theme-color" content="#252831">
+  <link rel="stylesheet" src="//cdnjs.cloudflare.com/ajax/libs/modern-normalize/0.4.0/modern-normalize.min.css" />
   <link rel="stylesheet" href="css/styles.css">
   <title>Restaurant Reviews</title>
 </head>
 
 <body>
   <header>
+    <h1><a href="/">Restaurant Reviews</a></h1>
+    <!-- Beginning nav to be added in later stage
     <nav>
-      <h1><a href="/">Restaurant Reviews</a></h1>
-    </nav>
+    </nav>-->
   </header>
 
   <main id="maincontent">
+    <div><a class="skip-link" href="#filter-options">Skip Map, Go to filter options</a></div>
+
     <section id="map-container">
       <div id="map"></div>
     </section>
     <section>
-      <div class="filter-options">
-        <h2>Filter Results</h2>
+      <div id="filter-options" class="filter-options" tabindex="0">
+        <h2>Filter Map Results</h2>
         <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
           <option value="all">All Neighborhoods</option>
         </select>
@@ -28,13 +34,16 @@
           <option value="all">All Cuisines</option>
         </select>
       </div>
+      </section>
+      <section>
+        <h2 role="heading" tabindex="0" class="results">Map Results</h2>
       <ul id="restaurants-list"></ul>
     </section>
   </main>
 
   <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places&callback=initMap"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap"></script>
 
 
   <footer id="footer">
