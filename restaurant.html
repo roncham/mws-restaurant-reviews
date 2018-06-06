@@ -10,6 +10,19 @@
   <!-- Main CSS file -->
   <link rel="stylesheet" href="css/styles.css" type="text/css">
   <title>Restaurant Info</title>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+        console.log(`Service Worker registered! Scope: ${registration.scope}`);
+      })
+      .catch(err => {
+        console.log(`Service Worker registration failed: ${err}`);
+      });
+  });
+}
+  </script>
 </head>
 
 <body>
@@ -37,7 +50,7 @@
   <main id="maincontent" class="inside">
     <!-- Beginning map -->
     <section id="map-container">
-      <div id="map"></div>
+      <div id="map" role="application"></div>
     </section>
     <!-- End map -->
 
@@ -45,7 +58,7 @@
       <!-- Beginning restaurant -->
       <section id="restaurant-container" tabindex="0">
         <h1 id="restaurant-name"></h1>
-        <figure>
+      <figure>
         <img id="restaurant-img">
       </figure>
       <figcaption>
@@ -75,6 +88,7 @@
 
   <!-- Beginning scripts -->
   <!-- Database helpers -->
+  <script type="application/javascript" charset="utf-8" src="js/idb.js"></script>
   <script type="text/javascript" src="js/dbhelper.js"></script>
   <!-- Main javascript file -->
   <script type="text/javascript" src="js/restaurant_info.js"></script>

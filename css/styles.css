@@ -7,7 +7,7 @@
   box-sizing: border-box;
 }
 
-body,td,th,p{
+body,td,th,p {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 14px;
 	color: #333;
@@ -43,12 +43,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 h2.results {
   font-size: 1.25em;
-  font-weight: normal;
+  font-weight: 600;
   line-height: 1;
   margin: 0 20px;
   padding: 10px 10px 0;
 }
-article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 header {
@@ -140,7 +141,7 @@ nav h1 a {
   top: -40px;
   left: 0;
   background: #a94442;
-  color: #FFFFFF;
+  color: #fff;
   padding: 8px;
   z-index: 100;
 }
@@ -198,6 +199,7 @@ nav h1 a {
 }
 
 #restaurants-list li {
+  display:grid;
   background-color: #fff;
   border: 2px solid #ccc;
   font-family: Arial,sans-serif;
@@ -349,6 +351,15 @@ nav h1 a {
       "reviews"
   }
   header h1 {
-    padding: 0;
+    padding: 10px 0 0 0;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    line-height: 1;
+  }
+  header h1 a {
+    font-size: 1rem;
   }
 }

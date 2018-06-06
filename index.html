@@ -5,7 +5,26 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
   <meta name="theme-color" content="#252831">
-  <link rel="stylesheet" src="//cdnjs.cloudflare.com/ajax/libs/modern-normalize/0.4.0/modern-normalize.min.css" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/img//favicon-16x16.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+        console.log(`Service Worker registered! Scope: ${registration.scope}`);
+      })
+      .catch(err => {
+        console.log(`Service Worker registration failed: ${err}`);
+      });
+  });
+}
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/0.4.0/modern-normalize.min.css"
+   integrity="sha384-Z1qZGWYgfYxvhysbLdh23I8uL0ohGt2D3TklAcf1EoIQm7JEHXmk/va7WFE+4IrT" crossorigin="anonymous">
   <link rel="stylesheet" href="css/styles.css">
   <title>Restaurant Reviews</title>
 </head>
@@ -22,7 +41,7 @@
     <div><a class="skip-link" href="#filter-options">Skip Map, Go to filter options</a></div>
 
     <section id="map-container">
-      <div id="map"></div>
+      <div id="map" role="application"></div>
     </section>
     <section>
       <div id="filter-options" class="filter-options" tabindex="0">
@@ -41,15 +60,14 @@
     </section>
   </main>
 
+  <script type="application/javascript" charset="utf-8" src="js/idb.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?libraries=places&callback=initMap"></script>
-
 
   <footer id="footer">
     Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
 
 </body>
-
 </html>
