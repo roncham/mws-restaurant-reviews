@@ -1,3 +1,8 @@
+/**
+* Some code from the following sources
+* https://developers.google.com/web/fundamentals/primers/service-workers/
+* https://developers.google.com/web/updates/2015/09/updates-to-cache-api
+**/
 const version = 'v1'
 const cacheName = `MWS_rest1-${version}`;
 
