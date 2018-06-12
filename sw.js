@@ -3,7 +3,7 @@
 * https://developers.google.com/web/fundamentals/primers/service-workers/
 * https://developers.google.com/web/updates/2015/09/updates-to-cache-api
 **/
-const version = 'v1'
+const version = 'v3'
 const cacheName = `MWS_rest1-${version}`;
 
 self.addEventListener('install', event => {
@@ -77,7 +77,7 @@ self.addEventListener('fetch', event => {
       .then(cache => cache.match(event.request, {ignoreSearch: true}))
       .then(response => {
       if (response) {
-      return response; // || fetch(event.request);
+      return response;
     }
     const fetchRequest = event.request.clone();
 
