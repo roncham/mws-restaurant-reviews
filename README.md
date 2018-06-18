@@ -4,6 +4,16 @@
 
 ## Project Overview: Stage 1
 
+## Reviewer NOTE: MapBox api key needed
+
+The api key has been removed from the main.js and restaurant_info.js files for public viewing. You'll need to create a config.js file in the root folder with the following:
+
+```
+let config = {
+  MY_KEY : '<Api key goes here>'
+}
+```
+
 For the **Restaurant Reviews** projects, you will incrementally convert a static webpage to a mobile-ready web application. In **Stage One**, you will take a static design that lacks accessibility and convert the design to be responsive on different sized displays and accessible for screen reader use. You will also add a service worker to begin the process of creating a seamless offline experience for your users.
 
 ### Specification
@@ -23,7 +33,3 @@ In a terminal, check the version of Python you have: `python -V`. If you have Py
 ### Note about ES6
 
 Most of the code in this project has been written to the ES6 JavaScript specification for compatibility with modern web browsers and future proofing JavaScript code. As much as possible, try to maintain use of ES6 in any additional JavaScript you write. 
-
-### MapBox api key needed
-
-The api key has been removed from the main.js and restaurant_info.js files for public viewing.
