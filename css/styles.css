@@ -75,12 +75,16 @@ header h1 a {
 }
 #footer {
   background-color: #444;
-  color: #aaa;
+  color: #fafafa;
   font-size: 0.8em;
   letter-spacing: 1px;
   padding: 25px;
   text-align: center;
   text-transform: uppercase;
+}
+/* ===================== Leaflet links ==================== */
+.leaflet-container a {
+  color: #005F85;
 }
 /* ====================== Navigation ====================== */
 nav {
@@ -162,7 +166,7 @@ nav h1 a {
   align-items: center;
 }
 .filter-options h2 {
-  color: white;
+  color: #222;
   font-size: 1.25em;
   font-weight: normal;
   line-height: 1;
@@ -211,11 +215,10 @@ nav h1 a {
   display: block;
   margin: 0;
   max-width: 100%;
-  min-height: 248px;
   min-width: 100%;
 }
 #restaurants-list li h1 {
-  color: #f18200;
+  color: #444;
   font-family: Arial,sans-serif;
   font-size: 1.5em;
   font-weight: 200;
@@ -231,9 +234,10 @@ nav h1 a {
 #restaurants-list li a {
   background-color: orange;
   border-bottom: 3px solid #eee;
-  color: #fff;
+  color: #000;
   display: inline-block;
   font-size: 1em;
+  font-weight: 700;
   margin: 15px 0 0;
   padding: 8px 30px 10px;
   text-align: center;
@@ -352,6 +356,9 @@ nav h1 a {
   }
   header h1 {
     padding: 10px 0 0 0;
+  }
+  .inside #map {
+    height: 30vh;
   }
 }
 
