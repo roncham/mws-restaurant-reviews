@@ -1,24 +1,22 @@
 /**
- * Some code used from the following Sources
- * https://developers.google.com/web/updates/2015/03/introduction-to-fetch
- * https://codelabs.developers.google.com/codelabs/workbox-indexeddb/#6
-*/
-
-/**
  * Common database helper functions.
  */
-
 /**
-* Start a new cache
-*/
-const dbPromise = idb.open('restaurant-db', 1, upgradeDB => {
-  switch (upgradeDB.oldVersion) {
-    case 0:
-      // placeholder db v = 0
-    case 1:
-      upgradeDB.createObjectStore('restaurants', {keyPath: 'id'});
+ * Start a new idb database
+ */
+function openDatabase() {
+  if (!('indexedDB' in window)) {
+    return null;
   }
-});
+  return idb.open('restaurants_db', 1, function (upgradeDb) {
+    if (!upgradeDb.objectStoreNames.contains('restaurants')) {
+      upgradeDb.createObjectStore('restaurants', {keyPath: 'id'});
+    }
+  });
+}
+
+const dbPromise = openDatabase();
+
 
 class DBHelper {
 
@@ -26,48 +24,88 @@ class DBHelper {
    * Database URL.
    * Change this to restaurants.json file location on your server.
    */
-  static get DATABASE_URL() {
-    const port = 1337 // Change this to your server port
-    return `http://localhost:${port}/restaurants`;
+  static DATABASE_URL(getid) {
+    const port = 1337; // Change this to your server port
+    if (getid === null) {
+      return `http://localhost:${port}/restaurants`;
+    } else {
+      return `http://localhost:${port}/restaurants/${getid}`;
+    }
+  }
+
+  /**
+  * Fetch JSON data
+  */
+
+  static fetchJSON() {
+    dbPromise.then(db => {
+      fetch(DBHelper.DATABASE_URL(null))
+        .then(res => {
+          if (res.status !== 200) {
+            console.log('Looks like there was a fetch problem. Status Code: ' +
+                  res.status);
+            return;
+          }
+          return res.json();
+        });
+    });
+  }
+
+  /**
+  * Add json to DB
+  */
+  static addJsonToIDB(res) {
+    dbPromise.then(db => {
+      let tx = db.transaction('restaurants', 'readwrite');
+      if (res && res.length > 0) {
+        res.forEach(obj => {
+          tx.objectStore('restaurants').put(obj);
+        });
+      }
+      return tx.complete;
+    });
   }
 
   /**
    * Fetch all restaurants.
    */
-  static fetchRestaurants(callback, id) {
-    function status(response) {
-      if (response.status >= 200 && response.status < 300) {
-        return Promise.resolve(response);
-      } else {
-        return Promise.reject(new Error(response.statusText));
-      }
-    }
-    function json(response) {
-      return response.json();
-    }
-    let fetchDB;
-    if (!id) {
-      fetchDB = DBHelper.DATABASE_URL;
-    } else {
-      fetchDB = DBHelper.DATABASE_URL + '/' + id;
-    }
-    fetch(fetchDB, {method: 'GET'})
-      .then(status)
-      .then(json)
-      .then(restaurants => {
-        if (restaurants.length) {
-          // Get all neighborhoods from all restaurants
-          const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood);
-          // Get all cuisines from all restaurants
-          const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type);
-        }
+  static fetchRestaurants(callback) {
 
+    // Get restaurants from IndexedDB
+    dbPromise.then(db => {
+      const tx = db.transaction('restaurants');
+      const res = tx.objectStore('restaurants');
+      return res.getAll ();
+    }).then(restaurants => {
+      // if we have restaurants in IndexedDb, we return them
+      if (restaurants.length !== 0) {
         callback(null, restaurants);
-      /*.then(function (data) {
-        console.log('Request succeeded with JSON response', data);*/
-      }).catch(function (error) {
-        console.log('Request failed', error);
-      });
+      } else {
+        // If not we fetch them from the server
+        fetch(DBHelper.DATABASE_URL(null))
+          .then(response => {
+            return response.json();
+          })
+          .then(restaurants => {
+            // Once fetched we add them to IndexedDB
+            dbPromise.then(db => {
+              const tx = db.transaction('restaurants', 'readwrite');
+              const res = tx.objectStore('restaurants');
+              for (const r_Data of restaurants) {
+                res.put(r_Data);
+              }
+              callback(null, restaurants);
+              return tx.complete;
+            }).then(function () {
+              // success message
+              console.log('Restaurants added');
+            }).catch(error => {
+              // message being returned if failing to add restaurants to Db
+              console.log(error);
+            });
+          });
+      }
+    });
   }
 
   /**
@@ -79,16 +117,15 @@ class DBHelper {
       if (error) {
         callback(error, null);
       } else {
-        const restaurant = restaurants; //.find(r => r.id === id);
+        const restaurant = restaurants.find(r => r.id == id);
         if (restaurant) { // Got the restaurant
           callback(null, restaurant);
         } else { // Restaurant does not exist in the database
           callback('Restaurant does not exist', null);
         }
       }
-    }, id);
+    });
   }
-
   /**
    * Fetch restaurants by a cuisine type with proper error handling.
    */
@@ -152,7 +189,7 @@ class DBHelper {
         callback(error, null);
       } else {
         // Get all neighborhoods from all restaurants
-        const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood)
+        const neighborhoods = restaurants.map((v, i) => restaurants[i].neighborhood);
         // Remove duplicates from neighborhoods
         const uniqueNeighborhoods = neighborhoods.filter((v, i) => neighborhoods.indexOf(v) === i);
         callback(null, uniqueNeighborhoods);
@@ -170,7 +207,7 @@ class DBHelper {
         callback(error, null);
       } else {
         // Get all cuisines from all restaurants
-        const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type)
+        const cuisines = restaurants.map((v, i) => restaurants[i].cuisine_type);
         // Remove duplicates from cuisines
         const uniqueCuisines = cuisines.filter((v, i) => cuisines.indexOf(v) === i);
         callback(null, uniqueCuisines);
@@ -206,19 +243,3 @@ class DBHelper {
     return marker;
   }
 }
-
-dbPromise.then(db => {
-  fetch(DBHelper.DATABASE_URL)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(jsonData => {
-      const tx = db.transaction('restaurants', 'readwrite');
-      const store = tx.objectStore('restaurants');
-      console.log('jsonData fetched!', jsonData);
-      for (let i = 0; i < jsonData.length; i++) {
-        store.put(jsonData[i]);
-      }
-      return tx.complete;
-    });
-}).then(() => console.log('JSON Cached!'));
