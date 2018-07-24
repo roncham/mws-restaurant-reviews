@@ -17,3 +17,5 @@ jspm_packages/
 config.js
 
 .eslintrc
+
+.vscode
