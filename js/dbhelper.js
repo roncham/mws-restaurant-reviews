@@ -34,39 +34,6 @@ class DBHelper {
   }
 
   /**
-  * Fetch JSON data
-  */
-
-  static fetchJSON() {
-    dbPromise.then(db => {
-      fetch(DBHelper.DATABASE_URL(null))
-        .then(res => {
-          if (res.status !== 200) {
-            console.log('Looks like there was a fetch problem. Status Code: ' +
-                  res.status);
-            return;
-          }
-          return res.json();
-        });
-    });
-  }
-
-  /**
-  * Add json to DB
-  */
-  static addJsonToIDB(res) {
-    dbPromise.then(db => {
-      let tx = db.transaction('restaurants', 'readwrite');
-      if (res && res.length > 0) {
-        res.forEach(obj => {
-          tx.objectStore('restaurants').put(obj);
-        });
-      }
-      return tx.complete;
-    });
-  }
-
-  /**
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {

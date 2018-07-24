@@ -5,14 +5,16 @@
 **/
 self.importScripts('./js/idb.js');
 
-const version = 'v1';
+const version = 'v2';
 const cacheName = `MWS_rest2-${version}`;
 
 self.addEventListener('install', event => {
+  skipWaiting();
   event.waitUntil(caches.open(cacheName).then(cache => {
     return cache.addAll([
       '/', '/index.html',
       '/restaurant.html',
+      '/offline.html',
       '/css/styles.css',
       '/js/idb.js',
       '/js/dbhelper.js',
@@ -71,7 +73,7 @@ self.addEventListener('fetch', event => {
         if (response) {
           return response || fetch(event.request);
         }
-
+        // end fetch catch
         const fetchRequest = event.request.clone();
 
         return fetch(fetchRequest)
@@ -91,11 +93,15 @@ self.addEventListener('fetch', event => {
           }
           );
       })
+      .catch(error => {
+        console.log('Page not cached ' + error);
+        return caches.match('/offline.html');
+      })
   );
 });
 
-self.addEventListener('restaurant', event => {
+/*self.addEventListener('restaurant', event => {
   if (event.data && event.data.updated) {
     self.skipWaiting();
   }
-});
+});*/

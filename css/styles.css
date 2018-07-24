@@ -87,6 +87,13 @@ header h1 a {
   text-align: center;
   text-transform: uppercase;
 }
+
+#offlinecontent {
+  background-color: #f3f3f3;
+  display: grid;
+  padding: 20px;
+  min-height: 100%;
+}
 /* ===================== Leaflet links ==================== */
 .leaflet-container a {
   color: #005F85;

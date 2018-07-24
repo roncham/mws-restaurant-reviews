@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <meta name="theme-color" content="#252831">
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffc40d">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+        console.log(`Service Worker registered! Scope: ${registration.scope}`);
+      })
+      .catch(err => {
+        console.log(`Service Worker registration failed: ${err}`);
+      });
+  });
+}
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/0.4.0/modern-normalize.min.css"
+   integrity="sha384-Z1qZGWYgfYxvhysbLdh23I8uL0ohGt2D3TklAcf1EoIQm7JEHXmk/va7WFE+4IrT" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/styles.css">
+  <title>Restaurant Reviews</title>
+</head>
+
+<body>
+  <header>
+    <h1><a href="/">Restaurant Reviews</a></h1>
+    <!-- Beginning nav to be added in later stage
+    <nav>
+    </nav>-->
+  </header>
+
+  <main id="offlinecontent">
+    <section>
+        <h2>It looks like you are offline</h2>
+
+        <p>We haven't saved this page for offline access yet.</p>
+    </section>
+
+    <section>
+      <p>Please try again when you have an Internet connection.</p>
+    </section>
+  </main>
+
+
+
+
+  <footer id="footer">
+    Copyright (c) 2018 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
+  </footer>
+
+</body>
+</html>
