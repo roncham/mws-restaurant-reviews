@@ -6,11 +6,11 @@
 
 ## Reviewer NOTE: MapBox api key needed
 
-The api key has been removed from the main.js and restaurant_info.js files for public viewing. You'll need to create a config.js file in the root folder with the following:
+The api key has been removed from the main.js and restaurant_info.js files for public viewing. You'll need to edit the config.js file in the root folder and add your mapbox key:
 
 ```
 let config = {
-  MY_KEY: '<Api key goes here>'
+  MY_KEY: 'ADD_MAPBOX_KEY_HERE'
 }
 ```
 

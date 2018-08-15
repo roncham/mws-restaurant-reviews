@@ -12,5 +12,4 @@ jspm_packages/
 .eslintcache
 .eslintrc
 
-config.js
 .vscode
