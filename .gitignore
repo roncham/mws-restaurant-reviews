@@ -10,12 +10,7 @@ jspm_packages/
 
 # Optional eslint cache
 .eslintcache
-
-# dotenv environment variables file
-.env
-
-config.js
-
 .eslintrc
 
+config.js
 .vscode

@@ -1,7 +1,7 @@
 {
-  "name": "mws-restaurant-stage-1",
+  "name": "mws-restaurant-reviews",
   "version": "1.0.0",
-  "description": "mws-resaurant-stage-1",
+  "description": "mws-resaurant-reviews",
   "main": "main.js",
   "scripts": {
     "start": "live-server --host=localhost --port=8000",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/roncham/mws-restaurant-stage-1.git"
+    "url": "git+https://github.com/roncham/mws-restaurant-reviews.git"
   },
   "author": "roncham",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/roncham/mws-restaurant-stage-1/issues"
+    "url": "https://github.com/roncham/mws-restaurant-reviews/issues"
   },
-  "homepage": "https://github.com/roncham/mws-restaurant-stage-1#readme",
+  "homepage": "https://github.com/roncham/mws-restaurant-reviews#readme",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-jshint": "~0.10.0",

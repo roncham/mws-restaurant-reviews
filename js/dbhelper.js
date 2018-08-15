@@ -58,8 +58,8 @@ class DBHelper {
             dbPromise.then(db => {
               const tx = db.transaction('restaurants', 'readwrite');
               const res = tx.objectStore('restaurants');
-              for (const r_Data of restaurants) {
-                res.put(r_Data);
+              for (const restData of restaurants) {
+                res.put(restData);
               }
               callback(null, restaurants);
               return tx.complete;
