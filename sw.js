@@ -99,9 +99,3 @@ self.addEventListener('fetch', event => {
       })
   );
 });
-
-/*self.addEventListener('restaurant', event => {
-  if (event.data && event.data.updated) {
-    self.skipWaiting();
-  }
-});*/

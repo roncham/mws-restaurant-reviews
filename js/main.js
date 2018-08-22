@@ -2,7 +2,21 @@ let restaurants,
   neighborhoods,
   cuisines
 var newMap
-var markers = []
+var markers = [];
+
+// Make sure sw are supported
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log(`Service Worker registered! Scope: ${registration.scope}`);
+      })
+      .catch(err => {
+        console.log(`Service Worker registration failed: ${err}`);
+      });
+  });
+}
+
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
@@ -89,7 +103,7 @@ initMap = () => {
   }).addTo(newMap);
 
   updateRestaurants();
-}
+};
 
 /**
  * Update page and map for current restaurants.
@@ -153,6 +167,7 @@ createRestaurantHTML = (restaurant) => {
   image.className = 'lazyload';
   const imageBase = DBHelper.imageUrlForRestaurant(restaurant);
   image.src = imageBase + '.jpg';
+  image.setAttribute('srcset', imageBase + `-300-small.jpg 300w ` + `, ` + imageBase + `-500-medium.jpg 500w`);
   image.setAttribute('data-src', imageBase + '.jpg');
   image.alt = `Photo of ` + restaurant.name;
   li.append(image);
@@ -160,6 +175,17 @@ createRestaurantHTML = (restaurant) => {
   const name = document.createElement('h1');
   name.innerHTML = restaurant.name;
   li.append(name);
+
+  const fav = document.createElement('span');
+  fav.className = 'fav';
+  fav.innerHTML = restaurant.is_favorite;
+  fav.innerHTML = '❤';
+  if (restaurant.is_favorite === 'true') {
+    fav.style.color = 'red';
+  } else {
+    fav.style.color = 'gray';
+  }
+  li.append(fav);
 
   const neighborhood = document.createElement('p');
   neighborhood.innerHTML = restaurant.neighborhood;

@@ -8,9 +8,13 @@ function openDatabase() {
   if (!('indexedDB' in window)) {
     return null;
   }
-  return idb.open('restaurants_db', 1, function (upgradeDb) {
-    if (!upgradeDb.objectStoreNames.contains('restaurants')) {
-      upgradeDb.createObjectStore('restaurants', {keyPath: 'id'});
+  return idb.open('restaurants_db', 2, function (upgradeDb) {
+    switch(upgradeDb.oldVersion) {
+      case 0:
+        upgradeDb.createObjectStore('restaurants', {keyPath: 'id'});
+      case 1:
+        const revStore = upgradeDb.createObjectStore('reviews', {keyPath: 'id'});
+        revStore.createIndex('restReviews', 'restaurant_id');
     }
   });
 }
@@ -24,13 +28,18 @@ class DBHelper {
    * Database URL.
    * Change this to restaurants.json file location on your server.
    */
-  static DATABASE_URL(getid) {
+  static DATABASE_URL(id) {
     const port = 1337; // Change this to your server port
-    if (getid === null) {
+    if (!id) {
       return `http://localhost:${port}/restaurants`;
     } else {
-      return `http://localhost:${port}/restaurants/${getid}`;
+      return `http://localhost:${port}/restaurants/${id}`;
     }
+  }
+
+  static DB_REVIEWS_URL() {
+    const Port = 1337; // Change this to your server port
+    return `http://localhost:${Port}/reviews/`;
   }
 
   /**
@@ -42,19 +51,19 @@ class DBHelper {
     dbPromise.then(db => {
       const tx = db.transaction('restaurants');
       const res = tx.objectStore('restaurants');
-      return res.getAll ();
+      return res.getAll();
     }).then(restaurants => {
       // if we have restaurants in IndexedDb, we return them
       if (restaurants.length !== 0) {
         callback(null, restaurants);
       } else {
-        // If not we fetch them from the server
-        fetch(DBHelper.DATABASE_URL(null))
+        // If not we fetch from the server
+        fetch(DBHelper.DATABASE_URL())
           .then(response => {
             return response.json();
           })
           .then(restaurants => {
-            // Once fetched we add them to IndexedDB
+            // Once fetched we add them into IndexedDB
             dbPromise.then(db => {
               const tx = db.transaction('restaurants', 'readwrite');
               const res = tx.objectStore('restaurants');
@@ -93,6 +102,7 @@ class DBHelper {
       }
     });
   }
+
   /**
    * Fetch restaurants by a cuisine type with proper error handling.
    */
@@ -183,6 +193,70 @@ class DBHelper {
   }
 
   /**
+   * Fetch all reviews with error handling.
+   */
+  static fetchReviews() {
+
+    // Get reviews from IndexedDB
+    dbPromise.then(db => {
+      const tx = db.transaction('reviews');
+      const res = tx.objectStore('reviews');
+      return res.getAll();
+    }).then(reviews => {
+      // if we have reviews in IndexedDb, we return them
+      if (reviews.length !== 0) {
+        return reviews;
+      } else {
+        // If not we fetch them from the server
+        fetch(DBHelper.DB_REVIEWS_URL())
+          .then(res => {
+            return res.json();
+          })
+          .then(res => {
+            // Once fetched we add them to IndexedDB
+            dbPromise.then(db => {
+              let tx = db.transaction('reviews', 'readwrite');
+              if (res && res.length > 0) {
+                res.forEach(obj => {
+                  tx.objectStore('reviews').put(obj);
+                });
+              }
+              return tx.complete;
+            }).then(function () {
+              // success message
+              console.log('All Reviews added');
+            }).catch(error => {
+              // message being returned if failing to add reviews to Db
+              console.log(error);
+            });
+          });
+      }
+    });
+  }
+
+  /**
+   * Fetch reviews by its ID.
+   */
+  static fetchReviewsById(id) {
+    // Fetch reviews from the server
+    fetch(DBHelper.DB_REVIEWS_URL(`?restaurant_id=${id}`))
+      .then(res => {
+        if (res.status !== 200) {
+          console.log('Looks like there was a fetch problem. ' + res.status);
+          return;
+        }
+        return res.json();
+      })
+      .then(function () {
+        // success message
+        console.log('Reviews added');
+      }).catch(error => {
+        // message being returned if failing to add reviews to Db
+        console.error(error);
+      });
+  }
+
+  /**
    * Restaurant page URL.
    */
   static urlForRestaurant(restaurant) {
@@ -199,7 +273,7 @@ class DBHelper {
   /**
    * Map marker for a restaurant.
    */
-  static mapMarkerForRestaurant(restaurant, map) {
+  static mapMarkerForRestaurant(restaurant, newMap) {
     // https://leafletjs.com/reference-1.3.0.html#marker
     const marker = new L.marker([restaurant.latlng.lat, restaurant.latlng.lng],
       {title: restaurant.name,

@@ -12,19 +12,6 @@
   <!-- Main CSS file -->
   <link rel="stylesheet" href="css/styles.css" type="text/css">
   <title>Restaurant Info</title>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-        .then(registration => {
-        console.log(`Service Worker registered! Scope: ${registration.scope}`);
-      })
-      .catch(err => {
-        console.log(`Service Worker registration failed: ${err}`);
-      });
-  });
-}
-  </script>
 </head>
 
 <body>
@@ -59,12 +46,16 @@
     <div id="restaurant-details" class="restaurant">
       <!-- Beginning restaurant -->
       <section id="restaurant-container" tabindex="0">
-        <h1 id="restaurant-name"></h1>
+        <div id="details-header">
+          <h1 id="restaurant-name" class="left"></h1>
+         <span id="fav" class="fav right" aria-label='Mark as Favorite'></span>
+        </div>
       <figure>
         <img id="restaurant-img">
       </figure>
       <figcaption>
         <p id="restaurant-cuisine"></p>
+        <h2 class="results">Address</h2>
         <p id="restaurant-address"></p>
         <h2 class="results">Hours</h2>
         <table id="restaurant-hours"></table>
@@ -73,7 +64,35 @@
       <!-- end restaurant -->
       <!-- Beginning reviews -->
       <section id="reviews-container">
-        <ul id="reviews-list"></ul>
+        <div>
+          <ul id="reviews-list"></ul>
+        </div>
+      
+        <!-- Trigger/Open The Add Review Modal -->
+        <button id="modalBtn">Add Your Review</button>
+        <!-- Add Review Modal -->
+        <div id="myModal" class="modal">
+          <!-- Modal content -->
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Please rate and comment</h2>
+            <p>
+              <form enctype="multipart/form-data" class='newReview' name='newReview' method='POST'>
+                <input id='name' type='text' name='name' aria-labelledby='namelabel' required aria-required='true' placeholder='Your name..' />
+                <select  id='rating' name='rating' aria-labelledby='ratinglabel' required aria-required='true'>
+                  <option value='1'>Rating 1</option>
+                  <option value='2'>Rating 2</option>
+                  <option value='3'>Rating 3</option>
+                  <option value='4'>Rating 4</option>
+                  <option value='5'>Rating 5</option>
+                </select>
+                <textarea  id='comment' type='textarea' name='email' aria-label='Comment' required aria-required='true' placeholder='Write something..'></textarea>
+                <input type='submit' class='button' value='Submit Review' name='Add' onclick='addNewReview()' />
+              </form>
+            </p>
+          </div>
+        </div> 
+
       </section>
       <!-- End reviews -->
     </div>
@@ -89,15 +108,14 @@
   <!-- End footer -->
 
   <!-- Beginning scripts -->
-  <!-- Database helpers -->
   <script src="js/idb.js"></script>
   <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
   <script src="js/lazysizes.min.js" async=""></script>
   <script src='config.js'></script>
   <script src="js/dbhelper.js"></script>
+  <script src="js/addreviews.js"></script>
   <!-- Main javascript file -->
   <script src="js/restaurant_info.js"></script>
-  <!-- Google Maps -->
   <!-- End scripts -->
 
 </body>
