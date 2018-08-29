@@ -196,64 +196,41 @@ class DBHelper {
    * Fetch all reviews with error handling.
    */
   static fetchReviews() {
-
-    // Get reviews from IndexedDB
-    dbPromise.then(db => {
-      const tx = db.transaction('reviews');
-      const res = tx.objectStore('reviews');
-      return res.getAll();
-    }).then(reviews => {
-      // if we have reviews in IndexedDb, we return them
-      if (reviews.length !== 0) {
-        return reviews;
-      } else {
-        // If not we fetch them from the server
-        fetch(DBHelper.DB_REVIEWS_URL())
-          .then(res => {
-            return res.json();
-          })
-          .then(res => {
-            // Once fetched we add them to IndexedDB
-            dbPromise.then(db => {
-              let tx = db.transaction('reviews', 'readwrite');
-              if (res && res.length > 0) {
-                res.forEach(obj => {
-                  tx.objectStore('reviews').put(obj);
-                });
-              }
-              return tx.complete;
-            }).then(function () {
-              // success message
-              console.log('All Reviews added');
-            }).catch(error => {
-              // message being returned if failing to add reviews to Db
-              console.log(error);
+    // Fetch reviews from the server
+    fetch(DBHelper.DB_REVIEWS_URL())
+      .then(res => {
+        return res.json();
+      })
+      .then(res => {
+        // Once fetched we add them to IndexedDB
+        dbPromise.then(db => {
+          let tx = db.transaction('reviews', 'readwrite');
+          if (res && res.length > 0) {
+            res.forEach(review => {
+              tx.objectStore('reviews').put(review);
             });
-          });
-      }
-    });
+          }
+          return tx.complete;
+        }).then(function () {
+          // success message
+          console.log('All Reviews added');
+        }).catch(error => {
+          // error returned if failing to add reviews to IDb
+          console.log(error);
+        });
+      });
   }
 
   /**
    * Fetch reviews by its ID.
    */
   static fetchReviewsById(id) {
-    // Fetch reviews from the server
-    fetch(DBHelper.DB_REVIEWS_URL(`?restaurant_id=${id}`))
-      .then(res => {
-        if (res.status !== 200) {
-          console.log('Looks like there was a fetch problem. ' + res.status);
-          return;
-        }
-        return res.json();
-      })
-      .then(function () {
-        // success message
-        console.log('Reviews added');
-      }).catch(error => {
-        // message being returned if failing to add reviews to Db
-        console.error(error);
-      });
+    // Fetch reviews from idb
+    //parseInt(id); // makes no difference
+    dbPromise.then(db => {
+      return db.transaction('reviews', 'readwrite')
+        .objectStore('reviews').index('restReviews').getAll(id);
+    }).then(reviews => console.log(reviews));
   }
 
   /**

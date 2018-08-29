@@ -72,10 +72,10 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   const fav = document.getElementById('fav');
   fav.innerHTML = restaurant.is_favorite;
   fav.innerText = '❤';
-  if (restaurant.is_favorite === 'true') {
-    fav.style.color = 'red';
+  if (restaurant.is_favorite !== true) {
+    fav.style.color = '#999';
   } else {
-    fav.style.color = 'gray';
+    fav.style.color = '#800';
   }
 
   const address = document.getElementById('restaurant-address');
@@ -99,10 +99,8 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   }
 
   // fill reviews
-  if (restaurant.reviews) {
-    fetchReviews();
-    fillReviewsHTML();
-  }
+  DBHelper.fetchReviewsById(self.restaurant.id, fillReviewsHTML);
+  //createReviewHTML();
 };
 
 /**
@@ -129,18 +127,11 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
  * Create all reviews HTML and add them to the webpage.
  */
 const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
-  if (!reviews) {
-    fetchReviews();
-  }
+
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
-
-  /*const revModal = document.createElement('button');
-  revModal.id = 'modalBtn';
-  revModal.innerHTML = 'Add Your Review';
-  container.appendChild(revModal);*/
 
   if (!reviews) {
     const noReviews = document.createElement('p');
@@ -158,7 +149,7 @@ const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
 /**
  * Create review HTML and add it to the webpage.
  */
-const createReviewHTML = (review) => {
+const createReviewHTML = review => {
   const li = document.createElement('li');
   const name = document.createElement('p');
   name.innerHTML = review.name;
@@ -182,7 +173,7 @@ const createReviewHTML = (review) => {
 /**
  * Add restaurant name to the breadcrumb navigation menu
  */
-const fillBreadcrumb = (restaurant=self.restaurant) => {
+const fillBreadcrumb = (restaurant = self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;

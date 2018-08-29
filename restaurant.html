@@ -14,7 +14,7 @@
   <title>Restaurant Info</title>
 </head>
 
-<body>
+<body onload = 'DBHelper.fetchReviews()'>
   <!-- Beginning header -->
   <header>
     <h1><a href="/">Restaurant Reviews</a></h1>
@@ -69,7 +69,7 @@
         </div>
       
         <!-- Trigger/Open The Add Review Modal -->
-        <button id="modalBtn">Add Your Review</button>
+        <span id="modalBtn">✚ Add Your Review</span>
         <!-- Add Review Modal -->
         <div id="myModal" class="modal">
           <!-- Modal content -->
@@ -77,8 +77,8 @@
             <span class="close">&times;</span>
             <h2>Please rate and comment</h2>
             <p>
-              <form enctype="multipart/form-data" class='newReview' name='newReview' method='POST'>
-                <input id='name' type='text' name='name' aria-labelledby='namelabel' required aria-required='true' placeholder='Your name..' />
+              <form enctype="multipart/form-data" class='newReview' name='newReview' action = 'http://localhost:1337/reviews/' method='POST'>
+                <input id='name' type='text' name='reviewer_name' aria-labelledby='namelabel' required aria-required='true' placeholder='Your name..' />
                 <select  id='rating' name='rating' aria-labelledby='ratinglabel' required aria-required='true'>
                   <option value='1'>Rating 1</option>
                   <option value='2'>Rating 2</option>
@@ -86,8 +86,9 @@
                   <option value='4'>Rating 4</option>
                   <option value='5'>Rating 5</option>
                 </select>
-                <textarea  id='comment' type='textarea' name='email' aria-label='Comment' required aria-required='true' placeholder='Write something..'></textarea>
-                <input type='submit' class='button' value='Submit Review' name='Add' onclick='addNewReview()' />
+                <textarea  id='comment' type='textarea' name='comment_text' aria-label='Comment' required aria-required='true' placeholder='Write something..'></textarea>
+                <input type='hidden' id='restaurant_id' name='restaurant_id' />
+              <button type='submit' class='button' value='Submit Review' name='Add' onclick='addNewReview()' </button>
               </form>
             </p>
           </div>

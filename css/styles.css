@@ -352,6 +352,7 @@ span.right {
   padding: 10px;
 }
 #reviews-container h2 {
+  grid-area: title;
   color: #444;
   font-size: 2em;
   font-weight: 300;
@@ -382,14 +383,11 @@ span.right {
 /* ====================== Add Review Modal ====================== */
 
 #modalBtn {
-  background-color: orange;
-  color: #000;
-  display: inline-block;
+  grid-area: addrev;
   font-size: 1em;
   font-weight: 700;
+  float:right;
   margin: 15px 0 0;
-  padding: 8px 30px 10px;
-  text-align: center;
   text-decoration: none;
   text-transform: uppercase;
 }

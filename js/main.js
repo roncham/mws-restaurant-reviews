@@ -22,7 +22,7 @@ if ('serviceWorker' in navigator) {
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', (event) => {
-  initMap(); // added 
+  initMap(); // added
   fetchNeighborhoods();
   fetchCuisines();
 });
@@ -180,10 +180,10 @@ createRestaurantHTML = (restaurant) => {
   fav.className = 'fav';
   fav.innerHTML = restaurant.is_favorite;
   fav.innerHTML = '❤';
-  if (restaurant.is_favorite === 'true') {
-    fav.style.color = 'red';
+  if (restaurant.is_favorite !== true) {
+    fav.style.color = '#999';
   } else {
-    fav.style.color = 'gray';
+    fav.style.color = '#800';
   }
   li.append(fav);
 
