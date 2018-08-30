@@ -99,8 +99,10 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   }
 
   // fill reviews
-  DBHelper.fetchReviewsById(self.restaurant.id, fillReviewsHTML);
-  //createReviewHTML();
+  if (restaurant.reviews) {
+    DBHelper.fetchReviewsById();
+    fillReviewsHTML();
+  }
 };
 
 /**
@@ -126,7 +128,7 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+const fillReviewsHTML = (reviews = self.reviews) => {
 
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
@@ -140,7 +142,7 @@ const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     return;
   }
   const ul = document.getElementById('reviews-list');
-  Array.prototype.forEach.call(reviews, review => {
+  reviews.forEach(review => {
     ul.appendChild(createReviewHTML(review));
   });
   container.appendChild(ul);

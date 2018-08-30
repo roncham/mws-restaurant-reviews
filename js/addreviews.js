@@ -12,7 +12,7 @@ addNewReview = () => {
     var oReq = new XMLHttpRequest();
     oReq.open('POST', 'restaurant.html', true);
     oReq.onload = function (oEvent) {
-      if (oReq.status == 200) {
+      if (oReq.status === 200) {
         oOutput.innerHTML = 'Review Sent!';
       } else {
         oOutput.innerHTML = 'Error ' + oReq.status + ' occurred when trying to submit your review.<br />';

@@ -359,6 +359,7 @@ span.right {
   padding-bottom: 1pt;
 }
 #reviews-list {
+  clear: both;
   margin: 0;
   padding: 0;
 }
@@ -387,9 +388,9 @@ span.right {
   font-size: 1em;
   font-weight: 700;
   float:right;
-  margin: 15px 0 0;
+  margin: 5px 0 0;
+  padding: 5px 7px;
   text-decoration: none;
-  text-transform: uppercase;
 }
 #modalBtn:hover {
   outline: 0;

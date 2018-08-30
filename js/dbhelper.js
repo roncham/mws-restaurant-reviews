@@ -212,10 +212,11 @@ class DBHelper {
           }
           return tx.complete;
         }).then(function () {
+          fillReviewsHTML();
           // success message
           console.log('All Reviews added');
         }).catch(error => {
-          // error returned if failing to add reviews to IDb
+        // error returned if failing to add reviews to IDb
           console.log(error);
         });
       });
@@ -225,13 +226,23 @@ class DBHelper {
    * Fetch reviews by its ID.
    */
   static fetchReviewsById(id) {
+    const url = `http://localhost:1337/reviews/?restaurant_id=${id}`;
+    return fetch(url, {method: 'GET'}).then(res => res.json())
+      .then(function () {
+      //  createReviewHTML();
+        // success message
+        console.log('Reviews fetched');
+      }).catch(error => {
+        // error returned if failing to fetch reviews
+        console.log(error);
+      });
+  }
+
     // Fetch reviews from idb
-    //parseInt(id); // makes no difference
-    dbPromise.then(db => {
+   /* dbPromise.then(db => {
       return db.transaction('reviews', 'readwrite')
         .objectStore('reviews').index('restReviews').getAll(id);
-    }).then(reviews => console.log(reviews));
-  }
+    }).then(reviews => console.log(reviews));*/
 
   /**
    * Restaurant page URL.
