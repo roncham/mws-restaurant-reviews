@@ -237,10 +237,10 @@ class DBHelper {
             .objectStore('reviews').index('restReviews').getAll(id);
         }).then(reviews => {
           return reviews(reviews.reverse());
-        }).then(reviews => console.log(reviews));
+        }).then(reviews => callback(null, reviews));
       }
-    }).then(data => {
-      callback(null, data);
+    }).then(reviews => {
+      console.log(reviews);
     }).catch(error => callback(error, null));
   }
 
