@@ -77,6 +77,7 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   } else {
     fav.style.color = '#800';
   }
+  //fav.onclick(markAsFav());
 
   const address = document.getElementById('restaurant-address');
   address.innerHTML = restaurant.address;
@@ -167,6 +168,22 @@ const createReviewHTML = review => {
   li.appendChild(comments);
 
   return li;
+};
+
+// mark as fav/unfav
+markAsFav = (element) => {
+  if (self.is_favorite === 'true') {
+    self.restaurant.is_favorite = 'false';
+    self.is_favorite = 'false';
+    //element.removeAttribute('aria-label');
+    //element.setAttribute('aria-label', 'Mark as favorite');
+  } else {
+    self.restaurant.is_favorite ='true';
+    self.is_favorite ='true';
+    //element.removeAttribute('aria-label');
+    //element.setAttribute('aria-label', 'Remove from favorite');
+  }
+  DBHelper.markAsFav(self.restaurant);
 };
 
 /**

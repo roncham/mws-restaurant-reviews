@@ -225,12 +225,23 @@ class DBHelper {
    * Fetch reviews by its ID.
    */
   static fetchReviewsById(id, callback) {
-    // fetch all restaurants with proper error handling.
+    // fetch reviews by id
     const url = `http://localhost:1337/reviews/?restaurant_id=${id}`;
-    return fetch(url, {method: 'GET'}).then(res => res.json())
-      .then(data => {
-        callback(null, data);
-      }).catch(error => callback(error, null));
+    return fetch(url, {method: 'GET'}).then(res => {
+      if (res) {
+        return res.json();
+      } else {
+        // Fetch reviews from idb
+        dbPromise.then(db => {
+          return db.transaction('reviews', 'readwrite')
+            .objectStore('reviews').index('restReviews').getAll(id);
+        }).then(reviews => {
+          return reviews(reviews.reverse());
+        }).then(reviews => console.log(reviews));
+      }
+    }).then(data => {
+      callback(null, data);
+    }).catch(error => callback(error, null));
   }
 
   // Fetch reviews from idb
@@ -238,6 +249,22 @@ class DBHelper {
       return db.transaction('reviews', 'readwrite')
         .objectStore('reviews').index('restReviews').getAll(id);
     }).then(reviews => console.log(reviews));*/
+
+  static markAsFav(restaurant) {
+    const favUrl = `http://localhost:1337/restaurants/<restaurant_id>/?is_favorite=true`;
+    const noFavUrl = `http://localhost:1337/restaurants/<restaurant_id>/?is_favorite=false`;
+    const fav = (restaurant.is_favorite === 'true' === favUrl);
+    const noFav = (restaurant.is_favorite === 'true' === noFavUrl);
+    console.log(fav, noFav);
+    return fetch(DBHelper.DATABASE_URL(restaurant.id), {method: 'PUT', body: restaurant})
+      .then(function (response) {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return [{}];
+        }
+      });
+  }
 
   /**
    * Restaurant page URL.

@@ -176,7 +176,7 @@ createRestaurantHTML = (restaurant) => {
   name.innerHTML = restaurant.name;
   li.append(name);
 
-  const fav = document.createElement('span');
+  const fav = document.createElement('button');
   fav.className = 'fav';
   fav.innerHTML = restaurant.is_favorite;
   fav.innerHTML = '❤';
