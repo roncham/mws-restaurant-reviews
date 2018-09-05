@@ -100,7 +100,10 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   }
 
   // fill reviews
-  DBHelper.fetchReviewsById(restaurant.id, fillReviewsHTML);
+  DBHelper.fetchReviewsById(self.restaurant.id).then(response => {
+    self.reviews = response;
+    fillReviewsHTML();
+  });
 };
 
 /**
@@ -156,7 +159,7 @@ const createReviewHTML = review => {
   li.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+  date.innerHTML = new Date(review.createdAt).toUTCString().slice(0, 16);
   li.appendChild(date);
 
   const rating = document.createElement('p');
@@ -193,6 +196,7 @@ const fillBreadcrumb = (restaurant = self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
+  li.setAttribute('aria-current', 'page');
   breadcrumb.appendChild(li);
 };
 

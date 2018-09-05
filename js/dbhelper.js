@@ -9,7 +9,7 @@ function openDatabase() {
     return null;
   }
   return idb.open('restaurants_db', 2, function (upgradeDb) {
-    switch(upgradeDb.oldVersion) {
+    switch (upgradeDb.oldVersion) {
       case 0:
         upgradeDb.createObjectStore('restaurants', {keyPath: 'id'});
       case 1:
@@ -228,27 +228,19 @@ class DBHelper {
     // fetch reviews by id
     const url = `http://localhost:1337/reviews/?restaurant_id=${id}`;
     return fetch(url, {method: 'GET'}).then(res => {
-      if (res) {
+      self.reviews = res;
+      if (res.ok) {
         return res.json();
       } else {
         // Fetch reviews from idb
         dbPromise.then(db => {
-          return db.transaction('reviews', 'readwrite')
+          const tx = db.transaction('reviews', 'readwrite')
             .objectStore('reviews').index('restReviews').getAll(id);
-        }).then(reviews => {
-          return reviews(reviews.reverse());
-        }).then(reviews => callback(null, reviews));
+          return tx.complete;
+        }).then(data => callback(null, data));
       }
-    }).then(reviews => {
-      console.log(reviews);
     }).catch(error => callback(error, null));
   }
-
-  // Fetch reviews from idb
-  /* dbPromise.then(db => {
-      return db.transaction('reviews', 'readwrite')
-        .objectStore('reviews').index('restReviews').getAll(id);
-    }).then(reviews => console.log(reviews));*/
 
   static markAsFav(restaurant) {
     const favUrl = `http://localhost:1337/restaurants/<restaurant_id>/?is_favorite=true`;

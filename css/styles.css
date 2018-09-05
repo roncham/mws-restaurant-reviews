@@ -358,6 +358,10 @@ span.right {
   font-weight: 300;
   padding-bottom: 1pt;
 }
+button#fav {
+  background-color: transparent;
+  border: none;
+}
 #reviews-list {
   clear: both;
   margin: 0;
