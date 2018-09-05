@@ -358,7 +358,7 @@ span.right {
   font-weight: 300;
   padding-bottom: 1pt;
 }
-button#fav {
+button#fav, button.fav {
   background-color: transparent;
   border: none;
 }
@@ -380,9 +380,6 @@ button#fav {
 }
 #reviews-list li p {
   margin: 0 0 10px;
-}
-#restaurant-hours td {
-  color: #888;
 }
 
 /* ====================== Add Review Modal ====================== */
