@@ -100,8 +100,8 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   }
 
   // fill reviews
-  DBHelper.fetchReviewsById(self.restaurant.id).then(response => {
-    self.reviews = response;
+  DBHelper.fetchReviewsById(self.restaurant.id).then(res => {
+    self.reviews = res;
     fillReviewsHTML();
   });
 };

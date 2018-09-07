@@ -14,7 +14,7 @@ function openDatabase() {
         upgradeDb.createObjectStore('restaurants', {keyPath: 'id'});
       case 1:
         const revStore = upgradeDb.createObjectStore('reviews', {keyPath: 'id'});
-        revStore.createIndex('restReviews', 'restaurant_id');
+        revStore.createIndex('restaurant_id', 'restaurant_id');
     }
   });
 }
@@ -199,7 +199,11 @@ class DBHelper {
     // Fetch reviews from the server
     fetch(DBHelper.DB_REVIEWS_URL())
       .then(res => {
-        return res.json();
+        if (res && res.status === 200) {
+          return res.json();
+        } else {
+          return;
+        }
       })
       .then(res => {
         // Once fetched we add them to IndexedDB
@@ -214,39 +218,36 @@ class DBHelper {
         }).then(function () {
           // success message
           console.log('All Reviews added');
-        }).catch(error => {
-        // error returned if failing to add reviews to IDb
-          console.log(error);
-        });
+          // error returned if failing to add reviews to IDb
+        }).catch(error => console.log(error));
       });
   }
 
   /**
    * Fetch reviews by its ID.
    */
-  static fetchReviewsById(id, callback) {
-    // fetch reviews by id
+  static fetchReviewsById(id, reviews) {
     const url = `http://localhost:1337/reviews/?restaurant_id=${id}`;
     return fetch(url, {method: 'GET'}).then(res => {
-      self.reviews = res;
       if (res.ok) {
         return res.json();
       } else {
         // Fetch reviews from idb
+        parseInt(id);
         dbPromise.then(db => {
           const tx = db.transaction('reviews', 'readwrite')
-            .objectStore('reviews').index('restReviews').getAll(id);
+            .objectStore('reviews').index('restaurant_id').getAll(reviews);
           return tx.complete;
-        }).then(data => callback(null, data));
+        });
       }
-    }).catch(error => callback(error, null));
+    });
   }
 
   static markAsFav(restaurant) {
     const favUrl = `http://localhost:1337/restaurants/<restaurant_id>/?is_favorite=true`;
     const noFavUrl = `http://localhost:1337/restaurants/<restaurant_id>/?is_favorite=false`;
     const fav = (restaurant.is_favorite === 'true' === favUrl);
-    const noFav = (restaurant.is_favorite === 'true' === noFavUrl);
+    const noFav = (restaurant.is_favorite === 'false' === noFavUrl);
     console.log(fav, noFav);
     return fetch(DBHelper.DATABASE_URL(restaurant.id), {method: 'PUT', body: restaurant})
       .then(function (response) {
