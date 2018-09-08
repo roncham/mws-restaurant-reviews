@@ -181,10 +181,24 @@ createRestaurantHTML = (restaurant) => {
   fav.innerHTML = restaurant.is_favorite;
   fav.innerHTML = '❤';
   if (restaurant.is_favorite !== true) {
-    fav.style.color = '#999';
+    fav.classList.remove('true');
+    fav.classList.add('false');
+    fav.setAttribute('aria-label', 'Mark as favorite');
   } else {
-    fav.style.color = '#800';
+    fav.classList.remove('false');
+    fav.classList.add('true');
+    fav.setAttribute('aria-label', 'Remove from favorites');
   }
+  fav.onclick = function () {
+    const isFav = !restaurant.is_favorite;
+    DBHelper.updateFav(restaurant.id, isFav);
+    restaurant.is_favorite = !restaurant.is_favorite;
+    if (restaurant.is_favorite !== true) {
+      fav.style.color = '#999';
+    } else {
+      fav.style.color = '#800';
+    }
+  };
   li.append(fav);
 
   const neighborhood = document.createElement('p');

@@ -14,7 +14,7 @@
   <title>Restaurant Info</title>
 </head>
 
-<body onload = 'DBHelper.fetchReviews()'>
+<body onload = 'DBHelper.fetchAndCacheReviews()'>
   <!-- Beginning header -->
   <header>
     <h1><a href="/">Restaurant Reviews</a></h1>
@@ -48,7 +48,7 @@
       <section id="restaurant-container" tabindex="0">
         <div id="details-header">
           <h1 id="restaurant-name" class="left"></h1>
-         <button id="fav" class="fav right" aria-label="Mark as favorite"></button>
+         <button tabindex="0" id="fav" class="fav right" aria-label=""></button>
         </div>
       <figure>
         <img id="restaurant-img">

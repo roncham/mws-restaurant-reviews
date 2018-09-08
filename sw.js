@@ -5,8 +5,8 @@
 **/
 self.importScripts('./js/idb.js');
 
-const version = 'v2';
-const cacheName = `MWS_rest2-${version}`;
+const version = 'v3';
+const cacheName = `MWS_rest3-${version}`;
 
 self.addEventListener('install', event => {
   skipWaiting();

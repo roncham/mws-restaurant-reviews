@@ -361,6 +361,7 @@ span.right {
 button#fav, button.fav {
   background-color: transparent;
   border: none;
+  color: #999;
 }
 #reviews-list {
   clear: both;

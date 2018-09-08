@@ -1,4 +1,4 @@
-var restaurant;
+let restaurant;
 var newMap;
 
 /**
@@ -73,11 +73,24 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   fav.innerHTML = restaurant.is_favorite;
   fav.innerText = '❤';
   if (restaurant.is_favorite !== true) {
-    fav.style.color = '#999';
+    fav.classList.remove('true');
+    fav.classList.add('false');
+    fav.setAttribute('aria-label', 'Mark as favorite');
   } else {
-    fav.style.color = '#800';
+    fav.classList.remove('false');
+    fav.classList.add('true');
+    fav.setAttribute('aria-label', 'Remove from favorites');
   }
-  //fav.onclick(markAsFav());
+  fav.onclick = function () {
+    const isFav = !restaurant.is_favorite;
+    DBHelper.updateFav(restaurant.id, isFav);
+    restaurant.is_favorite = !restaurant.is_favorite;
+    if (restaurant.is_favorite !== true) {
+      fav.style.color = '#999';
+    } else {
+      fav.style.color = '#800';
+    }
+  };
 
   const address = document.getElementById('restaurant-address');
   address.innerHTML = restaurant.address;
@@ -171,22 +184,6 @@ const createReviewHTML = review => {
   li.appendChild(comments);
 
   return li;
-};
-
-// mark as fav/unfav
-markAsFav = (element) => {
-  if (self.is_favorite === 'true') {
-    self.restaurant.is_favorite = 'false';
-    self.is_favorite = 'false';
-    //element.removeAttribute('aria-label');
-    //element.setAttribute('aria-label', 'Mark as favorite');
-  } else {
-    self.restaurant.is_favorite ='true';
-    self.is_favorite ='true';
-    //element.removeAttribute('aria-label');
-    //element.setAttribute('aria-label', 'Remove from favorite');
-  }
-  DBHelper.markAsFav(self.restaurant);
 };
 
 /**

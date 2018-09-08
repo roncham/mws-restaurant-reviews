@@ -14,7 +14,7 @@ function openDatabase() {
         upgradeDb.createObjectStore('restaurants', {keyPath: 'id'});
       case 1:
         const revStore = upgradeDb.createObjectStore('reviews', {keyPath: 'id'});
-        revStore.createIndex('restaurant_id', 'restaurant_id');
+        revStore.createIndex('revStore', 'restaurant_id');
     }
   });
 }
@@ -195,7 +195,7 @@ class DBHelper {
   /**
    * Fetch all reviews with error handling.
    */
-  static fetchReviews() {
+  static fetchAndCacheReviews() {
     // Fetch reviews from the server
     fetch(DBHelper.DB_REVIEWS_URL())
       .then(res => {
@@ -226,37 +226,29 @@ class DBHelper {
   /**
    * Fetch reviews by its ID.
    */
-  static fetchReviewsById(id, reviews) {
-    const url = `http://localhost:1337/reviews/?restaurant_id=${id}`;
-    return fetch(url, {method: 'GET'}).then(res => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        // Fetch reviews from idb
-        parseInt(id);
-        dbPromise.then(db => {
-          const tx = db.transaction('reviews', 'readwrite')
-            .objectStore('reviews').index('restaurant_id').getAll(reviews);
-          return tx.complete;
-        });
-      }
+  static fetchReviewsById(id) {
+    return dbPromise.then(db => {
+      const index = db.transaction('reviews', 'readwrite')
+        .objectStore('reviews').index('revStore');
+      return index.getAll(id);
     });
   }
 
-  static markAsFav(restaurant) {
-    const favUrl = `http://localhost:1337/restaurants/<restaurant_id>/?is_favorite=true`;
-    const noFavUrl = `http://localhost:1337/restaurants/<restaurant_id>/?is_favorite=false`;
-    const fav = (restaurant.is_favorite === 'true' === favUrl);
-    const noFav = (restaurant.is_favorite === 'false' === noFavUrl);
-    console.log(fav, noFav);
-    return fetch(DBHelper.DATABASE_URL(restaurant.id), {method: 'PUT', body: restaurant})
-      .then(function (response) {
-        if (response.ok) {
-          return response.json();
-        } else {
-          return [{}];
-        }
+  static updateFav(Id, isFav) {
+    fetch(`http://localhost:1337/restaurants/${Id}/?is_favorite=${isFav}`, {
+      method: 'PUT'
+    }).then(() => {
+      console.log('Favorite changed');
+      dbPromise.then(db => {
+        const tx = db.transaction('restaurants', 'readwrite');
+        const restaurantStore = tx.objectStore('restaurants');
+        restaurantStore.get(Id)
+          .then(restaurant => {
+            restaurant.is_favorite = isFav;
+            restaurantStore.put(restaurant);
+          });
       });
+    });
   }
 
   /**
