@@ -8,13 +8,14 @@ function openDatabase() {
   if (!('indexedDB' in window)) {
     return null;
   }
-  return idb.open('restaurants_db', 2, function (upgradeDb) {
+  return idb.open('restaurants_db', 3, function (upgradeDb) {
     switch (upgradeDb.oldVersion) {
       case 0:
         upgradeDb.createObjectStore('restaurants', {keyPath: 'id'});
-      case 1:
-        const revStore = upgradeDb.createObjectStore('reviews', {keyPath: 'id'});
-        revStore.createIndex('revStore', 'restaurant_id');
+
+      case 1: 
+        const reviews = upgradeDb.createObjectStore('reviews', {keyPath: 'id', autoIncrement: true});
+        reviews.createIndex('restaurant', 'restaurant_id');
     }
   });
 }
@@ -193,13 +194,13 @@ class DBHelper {
   }
 
   /**
-   * Fetch all reviews with error handling.
+   * Fetch and cache all reviews with error handling.
    */
   static fetchAndCacheReviews() {
     // Fetch reviews from the server
     fetch(DBHelper.DB_REVIEWS_URL())
       .then(res => {
-        if (res && res.status === 200) {
+        if (res.ok) {
           return res.json();
         } else {
           return;
@@ -229,11 +230,52 @@ class DBHelper {
   static fetchReviewsById(id) {
     return dbPromise.then(db => {
       const index = db.transaction('reviews', 'readwrite')
-        .objectStore('reviews').index('revStore');
-      return index.getAll(id);
+        .objectStore('reviews').index('restaurant');
+      return index.getAll(id).then(reviews => {
+        return reviews.reverse();
+      });
     });
   }
 
+  // add new review to the page
+  static addNewReview(review) {
+    console.log('this is what is sent to the addReview:', review);
+
+
+    fetch('http://localhost:1337/reviews/', {
+      method: 'POST',
+      mode: 'cors',
+      headers: new Headers ({'Content-Type': 'application/json; charset=utf-8'}),
+      body: JSON.stringify(review)
+    }).then((response) => {
+
+      console.log(response, 'after being sent to the server');
+
+      dbPromise.then(db => {
+        const tx = db.transaction('reviews', 'readwrite');
+        const revStore = tx.objectStore('reviews');
+
+        // loop thru each review and add to the cache
+        revStore.put(review);
+        return tx.complete;
+      });
+    });
+
+  }
+
+  static offLineReview(review) {
+    localStorage.setItem('review', JSON.stringify(review));
+
+    window.addEventListener('online', event => {
+      alertify.success('CONNECTION RESTORED');
+      DBHelper.addNewReview(review);
+      localStorage.removeItem('review');
+    });
+  }
+
+  /**
+   * Update Favorites
+   */
   static updateFav(Id, isFav) {
     fetch(`http://localhost:1337/restaurants/${Id}/?is_favorite=${isFav}`, {
       method: 'PUT'

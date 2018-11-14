@@ -358,10 +358,9 @@ span.right {
   font-weight: 300;
   padding-bottom: 1pt;
 }
-button#fav, button.fav {
+button.fav {
   background-color: transparent;
   border: none;
-  color: #999;
 }
 #reviews-list {
   clear: both;
@@ -370,10 +369,10 @@ button#fav, button.fav {
 }
 #reviews-list li {
   background-color: #fff;
-    border: 2px solid #f3f3f3;
+  border: 2px solid #ddd;
   display: block;
   list-style-type: none;
-  margin: 10px 0;
+  margin: 20px 0;
   overflow: hidden;
   padding: 0 20px 20px;
   position: relative;
@@ -427,6 +426,8 @@ button#fav, button.fav {
 .modal input {
   margin: 8px 0;
   padding: 12px 20px;
+}
+input#reviewer_name {
   width: 100%;
 }
 
@@ -440,7 +441,6 @@ button#fav, button.fav {
 .modal select {
   margin: 8px 0;
   padding: 7px;
-  width: 20%;
 }
 
 /* The Close Button */

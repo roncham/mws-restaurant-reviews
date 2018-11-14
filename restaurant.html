@@ -5,6 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
   <meta name="theme-color" content="#252831">
+  <link rel="manifest" href="/manifest.json">
   <!-- Add Leaflet for MapBox map -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ==" crossorigin=""/>
   <!-- Normalize.css for better cross-browser consistency -->
@@ -14,7 +15,7 @@
   <title>Restaurant Info</title>
 </head>
 
-<body onload = 'DBHelper.fetchAndCacheReviews()'>
+<body>
   <!-- Beginning header -->
   <header>
     <h1><a href="/">Restaurant Reviews</a></h1>
@@ -77,18 +78,21 @@
             <span class="close">&times;</span>
             <h2>Please rate and comment</h2>
             <p>
-              <form enctype="multipart/form-data" class='newReview' name='newReview' action = 'http://localhost:1337/reviews/' method='POST'>
-                <input id='name' type='text' name='reviewer_name' aria-labelledby='namelabel' required aria-required='true' placeholder='Your name..' />
+              <form id="add-review" enctype="multipart/form-data" class='newReview' name='newReview'  method='POST'>
+                <label for='reviewer_name'>Name
+                <input id='reviewer_name' type='text' name='reviewer_name' aria-labelledby='namelabel' required aria-required='true' autocomplete="name" placeholder='Your name' /></label>
+                <label for='Rating'>Rating
                 <select  id='rating' name='rating' aria-labelledby='ratinglabel' required aria-required='true'>
-                  <option value='1'>Rating 1</option>
-                  <option value='2'>Rating 2</option>
-                  <option value='3'>Rating 3</option>
-                  <option value='4'>Rating 4</option>
-                  <option value='5'>Rating 5</option>
-                </select>
-                <textarea  id='comment' type='textarea' name='comment_text' aria-label='Comment' required aria-required='true' placeholder='Write something..'></textarea>
-                <input type='hidden' id='restaurant_id' name='restaurant_id' value='' />
-              <button type='submit' class='button' value='Submit Review' name='addReview' >Submit Review</button>
+                  
+                  <option value='1'>1</option>
+                  <option value='2'>2</option>
+                  <option value='3'>3</option>
+                  <option value='4'>4</option>
+                  <option value='5'>5</option>
+                </select></label><br />
+                <label for='comment_text'>Comments
+                <textarea  id='comment_text' type='textarea' name='comment_text' aria-label='Comment' required aria-required='true' placeholder='Write something..'></textarea></label>
+              <button type='submit' class='button' value='Submit Review' onClick='addNewReview()' name='addReview' >Submit Review</button>
               </form>
             </p>
           </div>
@@ -112,10 +116,11 @@
   <script src="js/idb.js"></script>
   <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw==" crossorigin=""></script>
   <script src="js/lazysizes.min.js" async=""></script>
+  <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/alertify.min.js"></script>
   <script src='config.js'></script>
   <script src="js/dbhelper.js"></script>
-  <script src="js/addreviews.js"></script>
   <!-- Main javascript file -->
+  <script src="js/register.js"></script>
   <script src="js/restaurant_info.js"></script>
   <!-- End scripts -->
 

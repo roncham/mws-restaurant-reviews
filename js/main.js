@@ -4,20 +4,6 @@ let restaurants,
 var newMap
 var markers = [];
 
-// Make sure sw are supported
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then(registration => {
-        console.log(`Service Worker registered! Scope: ${registration.scope}`);
-      })
-      .catch(err => {
-        console.log(`Service Worker registration failed: ${err}`);
-      });
-  });
-}
-
-
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
@@ -183,10 +169,12 @@ createRestaurantHTML = (restaurant) => {
   if (restaurant.is_favorite !== true) {
     fav.classList.remove('true');
     fav.classList.add('false');
+    fav.style.color = '#999';
     fav.setAttribute('aria-label', 'Mark as favorite');
   } else {
     fav.classList.remove('false');
     fav.classList.add('true');
+    fav.style.color = '#800';
     fav.setAttribute('aria-label', 'Remove from favorites');
   }
   fav.onclick = function () {

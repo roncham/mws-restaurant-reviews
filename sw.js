@@ -1,15 +1,14 @@
 /**
 * Some code from the following sources
-*https://developers.google.com/web/fundamentals/primers/service-workers/
+* https://developers.google.com/web/fundamentals/primers/service-workers/
 * https://developers.google.com/web/updates/2015/09/updates-to-cache-api
 **/
 self.importScripts('./js/idb.js');
 
-const version = 'v3';
+const version = 'v4';
 const cacheName = `MWS_rest3-${version}`;
 
 self.addEventListener('install', event => {
-  skipWaiting();
   event.waitUntil(caches.open(cacheName).then(cache => {
     return cache.addAll([
       '/', '/index.html',
@@ -40,9 +39,7 @@ self.addEventListener('install', event => {
       'https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/0.4.0/modern-normalize.min.css',
       'https://unpkg.com/leaflet@1.3.1/dist/leaflet.js'
     ])
-      .catch(error => {
-        console.log('Caches open failed: ' + error);
-      });
+      .then(() => self.skipWaiting());
   }));
 });
 
@@ -89,12 +86,11 @@ self.addEventListener('fetch', event => {
               });
 
             return response;
-          }
-          );
-      })
+          }); // end fetch.then
+      }) // end .then response
       .catch(error => {
         console.log('Page not cached ' + error);
         return caches.match('/offline.html');
-      })
-  );
-});
+      }) // end .catch
+  ); // end respondWith
+}); // end addEventListener

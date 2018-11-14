@@ -75,10 +75,12 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   if (restaurant.is_favorite !== true) {
     fav.classList.remove('true');
     fav.classList.add('false');
+    fav.style.color = '#999';
     fav.setAttribute('aria-label', 'Mark as favorite');
   } else {
     fav.classList.remove('false');
     fav.classList.add('true');
+    fav.style.color = '#800';
     fav.setAttribute('aria-label', 'Remove from favorites');
   }
   fav.onclick = function () {
@@ -140,6 +142,55 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
 };
 
 /**
+ * Add New Reviews
+ */
+addNewReview = () => {
+  event.preventDefault();
+  // Get data from form
+  let restaurantId = getParameterByName('id');
+  let name = document.getElementById('reviewer_name').value;
+  let rating;
+  let comments = document.getElementById('comment_text').value;
+  rating = document.querySelector('#rating option:checked').value;
+  const review = [name, rating, comments, restaurantId];
+
+  // Add data to DOM
+  const displayNewReview = {
+    restaurant_id: parseInt(review[3]),
+    name: review[0],
+    createdAt: new Date(),
+    rating: parseInt(review[1]),
+    comments: review[2],
+    updatedAt: Date.now()
+  };
+
+  document.addEventListener('onLoad', (event) => {
+    console.log(event.type);
+
+  });
+  // if offline store the review in the db
+  if (!navigator.onLine) {
+  // add review to local storage then send to server after
+    DBHelper.offLineReview(displayNewReview);
+    createReviewHTML(displayNewReview);
+    document.getElementById('add-review')
+      .reset(
+        alertify.error('Offline Review added to DB')
+      );
+
+  } else {
+  // when online do the same thing
+    DBHelper.addNewReview(displayNewReview);
+    createReviewHTML(displayNewReview);
+    document.getElementById('add-review')
+      .reset(
+        alertify.success('New review was added')
+      );
+  }
+  document.getElementById('add-review').reset();
+};
+
+/**
  * Create all reviews HTML and add them to the webpage.
  */
 const fillReviewsHTML = (reviews = self.reviews) => {
@@ -162,7 +213,7 @@ const fillReviewsHTML = (reviews = self.reviews) => {
   container.appendChild(ul);
 };
 
-/**
+  /**
  * Create review HTML and add it to the webpage.
  */
 const createReviewHTML = review => {
@@ -186,7 +237,7 @@ const createReviewHTML = review => {
   return li;
 };
 
-/**
+  /**
  * Add restaurant name to the breadcrumb navigation menu
  */
 const fillBreadcrumb = (restaurant = self.restaurant) => {
@@ -197,7 +248,7 @@ const fillBreadcrumb = (restaurant = self.restaurant) => {
   breadcrumb.appendChild(li);
 };
 
-/**
+  /**
  * Get a parameter by name from page URL.
  */
 const getParameterByName = (name, url) => {
@@ -219,23 +270,18 @@ const getParameterByName = (name, url) => {
 // https://www.w3schools.com/howto/howto_css_modals.asp
 // Get the modal
 const modal = document.getElementById('myModal');
-
 // Get the button that opens the modal
 const btn = document.getElementById('modalBtn');
-
 // Get the <span> element that closes the modal
 const span = document.getElementsByClassName('close')[0];
-
 // When the user clicks on the button, open the modal
 btn.onclick = () => {
   modal.style.display = 'block';
-}
-
+};
 // When the user clicks on <span> (x), close the modal
 span.onclick = () => {
   modal.style.display = 'none';
-}
-
+};
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = (event => {
   if (event.target === modal) {
