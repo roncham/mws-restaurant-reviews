@@ -4,7 +4,7 @@
 
 ## Project Overview: Stage 2
 
-## Reviewer NOTE: MapBox api key needed
+<del>## Reviewer NOTE: MapBox api key needed
 
 The api key has been removed from the main.js and restaurant_info.js files for public viewing. You'll need to edit the config.js file in the root folder and add your mapbox key:
 
@@ -13,12 +13,8 @@ let config = {
   MY_KEY: 'ADD_MAPBOX_KEY_HERE'
 }
 ```
-
-For the **Restaurant Reviews** projects, you will incrementally convert a static webpage to a mobile-ready web application. In **Stage One**, you will take a static design that lacks accessibility and convert the design to be responsive on different sized displays and accessible for screen reader use. You will also add a service worker to begin the process of creating a seamless offline experience for your users.
-
-### Specification
-
-You have been provided the code for a restaurant reviews website. The code has a lot of issues. It’s barely usable on a desktop browser, much less a mobile device. It also doesn’t include any standard accessibility features, and it doesn’t work offline at all. Your job is to update the code to resolve these issues while still maintaining the included functionality. 
+</del>
+For the **Restaurant Reviews** projects, you will incrementally convert a static webpage to a mobile-ready web application. In **Stage One**, you will take a static design that lacks accessibility and convert the design to be responsive on different sized displays and accessible for screen reader use. You will also add a service worker to begin the process of creating a seamless offline experience for your users. 
 
 ### What do I do from here?
 
