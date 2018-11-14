@@ -188,6 +188,19 @@ addNewReview = () => {
       );
   }
   document.getElementById('add-review').reset();
+  displayOfflineReview();
+};
+
+displayOfflineReview = (review) => {
+  if (document.getElementById('no-review')) {
+    document.getElementById('no-review').remove();
+  }
+  const container = document.getElementById('reviews-container');
+  const ul = document.getElementById('reviews-list');
+
+  //insert the new review at top
+  ul.insertBefore(createReviewHTML(review), ul.firstChild);
+  container.appendChild(ul);
 };
 
 /**
@@ -196,7 +209,7 @@ addNewReview = () => {
 const fillReviewsHTML = (reviews = self.reviews) => {
 
   const container = document.getElementById('reviews-container');
-  const title = document.createElement('h2');
+  const title = document.createElement('h3');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
 
@@ -267,7 +280,9 @@ const getParameterByName = (name, url) => {
 /**
  * Add New Review Modal.
  */
-// https://www.w3schools.com/howto/howto_css_modals.asp
+MicroModal.init();
+
+ /*// https://www.w3schools.com/howto/howto_css_modals.asp
 // Get the modal
 const modal = document.getElementById('myModal');
 // Get the button that opens the modal
@@ -275,8 +290,15 @@ const btn = document.getElementById('modalBtn');
 // Get the <span> element that closes the modal
 const span = document.getElementsByClassName('close')[0];
 // When the user clicks on the button, open the modal
+// https://css-tricks.com/a-css-approach-to-trap-focus-inside-of-an-element/
 btn.onclick = () => {
-  modal.style.display = 'block';
+  if (isDialogSupported) {
+    modal.style.display = 'block';
+  } else {
+    modal.setAttribute('open', '');
+  }
+  //   Focus first input when dialog opens
+  modal.querySelector('input').focus();
 };
 // When the user clicks on <span> (x), close the modal
 span.onclick = () => {
@@ -288,3 +310,13 @@ window.onclick = (event => {
     modal.style.display = 'none';
   }
 });
+
+const isDialogSupported = true;
+if (!window.HTMLDialogElement) {
+  document.body.classList.add('no-dialog');
+  isDialogSupported = false;
+}
+
+modal.addEventListener('transitionend', e => {
+  modal.querySelector('input').focus();
+});*/
