@@ -3,9 +3,9 @@
 * https://developers.google.com/web/fundamentals/primers/service-workers/
 * https://developers.google.com/web/updates/2015/09/updates-to-cache-api
 **/
-self.importScripts('./js/idb.js');
+//self.importScripts('./js/idb.js');
 
-const version = 'v4';
+const version = 'v5';
 const cacheName = `MWS_rest3-${version}`;
 
 self.addEventListener('install', event => {
@@ -33,7 +33,7 @@ self.addEventListener('install', event => {
       '/img/undefined.jpg',
       '/img/android-chrome-192x192.png',
       '/img/android-chrome-256x256.png',
-      '/img/favicon.ico',
+      '/favicon.ico',
       '/img/favicon-16x16.png',
       '/img/favicon-32x32.png',
       'https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/0.4.0/modern-normalize.min.css',
@@ -42,7 +42,6 @@ self.addEventListener('install', event => {
       'https://unpkg.com/micromodal/dist/micromodal.min.js',
       'https://cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/alertify.min.js',
       'https://cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/css/alertify.min.css'
-      
     ])
       .then(() => self.skipWaiting());
   }));
