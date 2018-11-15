@@ -189,6 +189,7 @@ addNewReview = () => {
   }
   document.getElementById('add-review').reset();
   displayOfflineReview(displayNewReview);
+  DBHelper.fetchAndCacheReviews(displayNewReview);
 };
 
 displayOfflineReview = (review) => {

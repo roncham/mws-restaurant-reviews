@@ -267,7 +267,7 @@ class DBHelper {
     localStorage.setItem('review', JSON.stringify(review));
 
     window.addEventListener('online', event => {
-      alertify.success('CONNECTION RESTORED');
+      alertify.success('Connection Restored');
       DBHelper.addNewReview(review);
       localStorage.removeItem('review');
     });
