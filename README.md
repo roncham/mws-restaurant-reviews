@@ -4,11 +4,11 @@
 
 ## Project Overview: Stage 2
 
-[comment]: <> ## Reviewer NOTE: MapBox api key needed
+[//]: # ## Reviewer NOTE: MapBox api key needed
 
-[comment]: <> The api key has been removed from the main.js and restaurant_info.js files for public viewing. You'll need to edit the config.js file in the root folder and add your mapbox key:
+[//]: # The api key has been removed from the main.js and restaurant_info.js files for public viewing. You'll need to edit the config.js file in the root folder and add your mapbox key:
 
-[comment]: <> ```
+[//]: # ```
 let config = {
   MY_KEY: 'ADD_MAPBOX_KEY_HERE'
 }
