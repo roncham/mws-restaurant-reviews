@@ -2,17 +2,8 @@
 ---
 #### _Three Stage Course Material Project - Restaurant Reviews_
 
-## Project Overview: Stage 2
+## Project Overview: Final Stage
 
-[//]: # ## Reviewer NOTE: MapBox api key needed
-
-[//]: # The api key has been removed from the main.js and restaurant_info.js files for public viewing. You'll need to edit the config.js file in the root folder and add your mapbox key:
-
-[//]: # ```
-let config = {
-  MY_KEY: 'ADD_MAPBOX_KEY_HERE'
-}
-```
 
 For the **Restaurant Reviews** projects, you will incrementally convert a static webpage to a mobile-ready web application. In **Stage One**, you will take a static design that lacks accessibility and convert the design to be responsive on different sized displays and accessible for screen reader use. You will also add a service worker to begin the process of creating a seamless offline experience for your users. 
 
