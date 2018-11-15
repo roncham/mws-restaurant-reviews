@@ -33,11 +33,16 @@ self.addEventListener('install', event => {
       '/img/undefined.jpg',
       '/img/android-chrome-192x192.png',
       '/img/android-chrome-256x256.png',
+      '/img/favicon.ico',
       '/img/favicon-16x16.png',
       '/img/favicon-32x32.png',
-      'https://unpkg.com/leaflet@1.3.1/dist/leaflet.css',
       'https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/0.4.0/modern-normalize.min.css',
-      'https://unpkg.com/leaflet@1.3.1/dist/leaflet.js'
+      'https://unpkg.com/leaflet@1.3.1/dist/leaflet.css',
+      'https://unpkg.com/leaflet@1.3.1/dist/leaflet.js',
+      'https://unpkg.com/micromodal/dist/micromodal.min.js',
+      'https://cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/alertify.min.js',
+      'https://cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/css/alertify.min.css'
+      
     ])
       .then(() => self.skipWaiting());
   }));
