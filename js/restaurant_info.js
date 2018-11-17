@@ -73,12 +73,10 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   fav.innerHTML = restaurant.is_favorite;
   fav.innerText = '❤';
   if (restaurant.is_favorite !== true) {
-    fav.classList.remove('true');
     fav.classList.add('false');
     fav.style.color = '#999';
     fav.setAttribute('aria-label', 'Mark as favorite');
   } else {
-    fav.classList.remove('false');
     fav.classList.add('true');
     fav.style.color = '#800';
     fav.setAttribute('aria-label', 'Remove from favorites');
@@ -88,9 +86,13 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
     DBHelper.updateFav(restaurant.id, isFav);
     restaurant.is_favorite = !restaurant.is_favorite;
     if (restaurant.is_favorite !== true) {
-      fav.style.color = '#999';
-    } else {
+      fav.classList.remove('false');
+      fav.classList.add('true');
       fav.style.color = '#800';
+    } else {
+      fav.classList.remove('true');
+      fav.classList.add('false');
+      fav.style.color = '#999';
     }
   };
 
@@ -151,7 +153,7 @@ addNewReview = () => {
   let name = document.getElementById('reviewer_name').value;
   let rating;
   let comments = document.getElementById('comment_text').value;
-  rating = document.querySelector('#rating option:checked').value;
+  rating = document.querySelector('input[name="rating"]:checked').value;
   const review = [name, rating, comments, restaurantId];
 
   // Add data to DOM
@@ -233,18 +235,23 @@ const fillReviewsHTML = (reviews = self.reviews) => {
 const createReviewHTML = review => {
   const li = document.createElement('li');
   const name = document.createElement('p');
+  name.className = 'name';
   name.innerHTML = review.name;
   li.appendChild(name);
 
   const date = document.createElement('p');
+  date.className = 'date';
   date.innerHTML = new Date(review.createdAt).toUTCString().slice(0, 16);
   li.appendChild(date);
 
-  const rating = document.createElement('p');
-  rating.innerHTML = `Rating: ${review.rating}`;
+  const rating = document.createElement('p');//, `data-rating="${review.rating}"`);
+  rating.className = 'starability-result';
+  rating.setAttribute('data-rating', review.rating);
+  rating.innerHTML = `Rated: ${review.rating} stars`;
   li.appendChild(rating);
 
   const comments = document.createElement('p');
+  comments.className = 'comment';
   comments.innerHTML = review.comments;
   li.appendChild(comments);
 

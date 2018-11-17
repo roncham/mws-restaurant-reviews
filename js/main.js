@@ -167,12 +167,10 @@ createRestaurantHTML = (restaurant) => {
   fav.innerHTML = restaurant.is_favorite;
   fav.innerHTML = '❤';
   if (restaurant.is_favorite !== true) {
-    fav.classList.remove('true');
     fav.classList.add('false');
     fav.style.color = '#999';
     fav.setAttribute('aria-label', 'Mark as favorite');
   } else {
-    fav.classList.remove('false');
     fav.classList.add('true');
     fav.style.color = '#800';
     fav.setAttribute('aria-label', 'Remove from favorites');
@@ -182,9 +180,13 @@ createRestaurantHTML = (restaurant) => {
     DBHelper.updateFav(restaurant.id, isFav);
     restaurant.is_favorite = !restaurant.is_favorite;
     if (restaurant.is_favorite !== true) {
-      fav.style.color = '#999';
-    } else {
+      fav.classList.remove('false');
+      fav.classList.add('true');
       fav.style.color = '#800';
+    } else {
+      fav.classList.remove('true');
+      fav.classList.add('false');
+      fav.style.color = '#999';
     }
   };
   li.append(fav);

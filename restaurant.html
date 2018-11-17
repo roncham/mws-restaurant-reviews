@@ -11,6 +11,7 @@
   <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" src="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/0.4.0/modern-normalize.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.11.1/build/css/alertify.min.css"/>
+  <link rel="stylesheet" href="css/starability-checkmark.min.css" type="text/css">
   <!-- Main CSS file -->
   <link rel="stylesheet" href="css/styles.css" type="text/css">
   <title>Restaurant Info</title>
@@ -78,14 +79,14 @@
           <!-- Modal content -->
           <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
             <header class="modal__header">
-                <h2 modal__title" id="modal-1-title">Please rate and comment</h2>
+                <h3 modal__title" id="modal-1-title">Please rate and comment</h3>
               <button class="close modal__close" aria-label="Close modal" data-micromodal-close></button>
             </header>
             <main class="modal-content modal__content" id="modal-1-content">
               <form id="add-review" enctype="multipart/form-data" class='newReview' name='newReview'  method="dialog">
                 <label for='reviewer_name'>Name
                 <input id='reviewer_name' type='text' name='reviewer_name' aria-labelledby='namelabel' required aria-required='true' autocomplete="name" placeholder='Your name' /></label>
-                <label for='Rating'>Rating
+                <!--<label for='Rating'>Rating
                 <select  id='rating' name='rating' aria-labelledby='ratinglabel' required aria-required='true'>
                   
                   <option value='1'>1</option>
@@ -93,7 +94,28 @@
                   <option value='3'>3</option>
                   <option value='4'>4</option>
                   <option value='5'>5</option>
-                </select></label><br />
+                </select></label>-->
+                <fieldset class="starability-checkmark" required aria-required='true'>
+                  <legend>Your rating:</legend>
+                  <input type="radio" id="no-rate-checkmark" class="input-no-rate" name="rating" value="0" checked="" aria-label="No rating.">
+          
+                  <input type="radio" id="checkmark-rate1 rating" name="rating" value="1">
+                  <label for="checkmark-rate1" title="Terrible">1 star</label>
+          
+                  <input type="radio" id="checkmark-rate2" name="rating" value="2">
+                  <label for="checkmark-rate2" title="Not good">2 stars</label>
+          
+                  <input type="radio" id="checkmark-rate3" name="rating" value="3">
+                  <label for="checkmark-rate3" title="Average">3 stars</label>
+          
+                  <input type="radio" id="checkmark-rate4" name="rating" value="4">
+                  <label for="checkmark-rate4" title="Very good">4 stars</label>
+          
+                  <input type="radio" id="checkmark-rate5" name="rating" value="5">
+                  <label for="checkmark-rate5" title="Amazing">5 stars</label>
+          
+                  <span class="starability-focus-ring"></span>
+                </fieldset><br />
                 <label for='comment_text'>Comments
                 <textarea  id='comment_text' type='textarea' name='comment_text' aria-label='Comment' required aria-required='true' placeholder='Write something..'></textarea></label>
               <footer class="modal__footer">

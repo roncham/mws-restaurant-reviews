@@ -379,7 +379,21 @@ button.fav {
   width: 100%;
 }
 #reviews-list li p {
-  margin: 0 0 10px;
+  margin: 10px;
+}
+#reviews-list p.name {
+  font-weight: 700;
+  font-size: 16px;
+}
+#reviews-list p.date {
+  margin-top: -10px;
+  font-size: 11px;
+  font-weight: 400;
+  line-height:16px;
+  color: #b2b2b2;
+}
+#reviews-list p.comment {
+  font-style: italic;
 }
 
 /* ====================== Add Review Modal ====================== */
