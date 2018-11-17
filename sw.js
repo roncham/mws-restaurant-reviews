@@ -15,6 +15,7 @@ self.addEventListener('install', event => {
       '/restaurant.html',
       '/offline.html',
       '/css/styles.css',
+      '/css/starability-checkmark.min.css',
       '/js/idb.js',
       '/js/dbhelper.js',
       '/js/main.js',
